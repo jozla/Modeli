@@ -140,7 +140,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimTerminal.ID, gid);
 
                 ////populate ResourceDescription
-                //PowerTransformerConverter.PopulateTerminalProperties(cimTerminal, rd);
+                PowerTransformerConverter.PopulateTerminalProperties(cimTerminal, rd, importHelper, report);
             }
             return rd;
         }
@@ -180,7 +180,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimControl.ID, gid);
 
                 ////populate ResourceDescription
-                //PowerTransformerConverter.PopulateControlProperties(cimControl, rd);
+                PowerTransformerConverter.PopulateControlProperties(cimControl, rd, importHelper, report);
             }
             return rd;
         }
@@ -221,7 +221,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimRegulatingControl.ID, gid);
 
                 ////populate ResourceDescription
-                //PowerTransformerConverter.PopulateTerminalProperties(cimRegulatingControl, rd);
+                PowerTransformerConverter.PopulateRegulatingControlProperties(cimRegulatingControl, rd, importHelper, report);
             }
             return rd;
         }
@@ -261,7 +261,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimShuntCompnesator.ID, gid);
 
                 ////populate ResourceDescription
-                //PowerTransformerConverter.PopulateTerminalProperties(cimShuntCompnesator, rd);
+                //PowerTransformerConverter.PopulateShuntCompensatorProperties(cimShuntCompnesator, rd);
             }
             return rd;
         }
@@ -301,7 +301,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimStaticVarCompensator.ID, gid);
 
                 ////populate ResourceDescription
-                //PowerTransformerConverter.PopulateTerminalProperties(cimStaticVarCompensator, rd);
+                //PowerTransformerConverter.PopulateStaticVarCompensatorProperties(cimStaticVarCompensator, rd);
             }
             return rd;
         }
@@ -341,7 +341,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimSynchronousMachine.ID, gid);
 
                 ////populate ResourceDescription
-                //PowerTransformerConverter.PopulateTerminalProperties(cimSynchronousMachine, rd);
+                PowerTransformerConverter.PopulateSynchronousMachineProperties(cimSynchronousMachine, rd, importHelper, report);
             }
             return rd;
         }
@@ -381,7 +381,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
                 importHelper.DefineIDMapping(cimReactiveCapabilityCurve.ID, gid);
 
                 ////populate ResourceDescription
-                //PowerTransformerConverter.PopulateTerminalProperties(cimReactiveCapabilityCurve, rd);
+                //PowerTransformerConverter.PopulateReactiveCapabilityCurvesProperties(cimReactiveCapabilityCurve, rd);
             }
             return rd;
         }

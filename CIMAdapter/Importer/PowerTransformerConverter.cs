@@ -9,12 +9,143 @@
 	public static class PowerTransformerConverter
 	{
 
-		#region Populate ResourceDescription
+        #region Populate ResourceDescription
+        public static void PopulateTerminalProperties(FTN.Terminal cimTerminal, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
+        {
+            if ((cimTerminal != null) && (rd != null))
+            {
+                //PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimTerminal, rd);
 
-		#endregion Populate ResourceDescription
+                if (cimTerminal.ConductingEquipmentHasValue)
+                {
+                    long gid = importHelper.GetMappedGID(cimTerminal.ConductingEquipment.ID);
+                    if (gid < 0)
+                    {
+                        report.Report.Append("WARNING: Convert ").Append(cimTerminal.GetType().ToString()).Append(" rdfID = \"").Append(cimTerminal.ID);
+                        report.Report.Append("\" - Failed to set reference to Location: rdfID \"").Append(cimTerminal.ConductingEquipment.ID).AppendLine(" \" is not mapped to GID!");
+                    }
+                    rd.AddProperty(new Property(ModelCode.TERMINAL_CONDEQ, gid));
+                }
+            }
+        }
 
-		#region Enums convert
-		public static PhaseCode GetDMSPhaseCode(FTN.PhaseCode phases)
+
+        public static void PopulateControlProperties(FTN.Control cimControl, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
+        {
+            if ((cimControl != null) && (rd != null))
+            {
+                //PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimControl, rd);
+
+                if (cimControl.RegulatingCondEqHasValue)
+                {
+                    long gid = importHelper.GetMappedGID(cimControl.RegulatingCondEq.ID);
+                    if (gid < 0)
+                    {
+                        report.Report.Append("WARNING: Convert ").Append(cimControl.GetType().ToString()).Append(" rdfID = \"").Append(cimControl.ID);
+                        report.Report.Append("\" - Failed to set reference to Location: rdfID \"").Append(cimControl.RegulatingCondEq.ID).AppendLine(" \" is not mapped to GID!");
+                    }
+                    rd.AddProperty(new Property(ModelCode.CONTROL_REGCONDEQ, gid));
+                }
+            }
+        }
+
+        public static void PopulateEquipmentProperties(FTN.Equipment cimEquipment, ResourceDescription rd)
+        {
+            if ((cimEquipment != null) && (rd != null))
+            {
+                //PowerTransformerConverter.PopulatePowerSystemResourceProperties(cimEquipment, rd, importHelper, report);
+
+                if (cimEquipment.AggregateHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.EQUIPMENT_AGGREGATE, cimEquipment.Aggregate));
+                }
+                if (cimEquipment.NormallyInServiceHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.EQUIPMENT_NORMALLYINSERVICE, cimEquipment.NormallyInService));
+                }
+            }
+        }
+
+        public static void PopulateRegulatingControlProperties(FTN.RegulatingControl cimRegulatingControl, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
+        {
+            if ((cimRegulatingControl != null) && (rd != null))
+            {
+                //PowerTransformerConverter.PopulatePowerSystemResourceProperties(cimRegulatingControl, rd, importHelper, report);
+
+                if (cimRegulatingControl.DiscreteHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.REGCONTROL_DISCRETE, cimRegulatingControl.Discrete));
+                }
+                if (cimRegulatingControl.ModeHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.REGCONTROL_MODE, (short)GetDMSRegulatingControlModeKind(cimRegulatingControl.Mode)));
+                }
+                if (cimRegulatingControl.MonitoredPhaseHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.REGCONTROL_MONITOREDPHASE, (short)GetDMSPhaseCode(cimRegulatingControl.MonitoredPhase)));
+                }
+                if (cimRegulatingControl.TargetRangeHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.REGCONTROL_TARGETRANGE, cimRegulatingControl.TargetRange));
+                }
+                if (cimRegulatingControl.TargetValueHasValue)
+                {
+                    rd.AddProperty(new Property(ModelCode.REGCONTROL_TARGETVALUE, cimRegulatingControl.TargetValue));
+                }
+                if (cimRegulatingControl.TerminalHasValue)
+                {
+                    long gid = importHelper.GetMappedGID(cimRegulatingControl.Terminal.ID);
+                    if (gid < 0)
+                    {
+                        report.Report.Append("WARNING: Convert ").Append(cimRegulatingControl.GetType().ToString()).Append(" rdfID = \"").Append(cimRegulatingControl.ID);
+                        report.Report.Append("\" - Failed to set reference to Location: rdfID \"").Append(cimRegulatingControl.Terminal.ID).AppendLine(" \" is not mapped to GID!");
+                    }
+                    rd.AddProperty(new Property(ModelCode.REGCONTROL_TERMINAL, gid));
+                }
+            }
+        }
+
+        public static void PopulateRegulatingCondEqProperties(FTN.RegulatingCondEq cimRegulatingCondEq, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
+        {
+            if ((cimRegulatingCondEq != null) && (rd != null))
+            {
+                //PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimRegulatingCondEq, rd);
+
+                if (cimRegulatingCondEq.RegulatingControlHasValue)
+                {
+                    long gid = importHelper.GetMappedGID(cimRegulatingCondEq.RegulatingControl.ID);
+                    if (gid < 0)
+                    {
+                        report.Report.Append("WARNING: Convert ").Append(cimRegulatingCondEq.GetType().ToString()).Append(" rdfID = \"").Append(cimRegulatingCondEq.ID);
+                        report.Report.Append("\" - Failed to set reference to Location: rdfID \"").Append(cimRegulatingCondEq.RegulatingControl.ID).AppendLine(" \" is not mapped to GID!");
+                    }
+                    rd.AddProperty(new Property(ModelCode.REGCONDEQ_REGCONTROL, gid));
+                }
+            }
+        }
+
+        public static void PopulateSynchronousMachineProperties(FTN.SynchronousMachine cimSynchronousMachine, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
+        {
+            if ((cimSynchronousMachine != null) && (rd != null))
+            {
+                //PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimSynchronousMachine, rd);
+
+                if (cimSynchronousMachine.ReactiveCapabilityCurvesHasValue)
+                {
+                    long gid = importHelper.GetMappedGID(cimSynchronousMachine.ReactiveCapabilityCurves.ID);
+                    if (gid < 0)
+                    {
+                        report.Report.Append("WARNING: Convert ").Append(cimSynchronousMachine.GetType().ToString()).Append(" rdfID = \"").Append(cimSynchronousMachine.ID);
+                        report.Report.Append("\" - Failed to set reference to Location: rdfID \"").Append(cimSynchronousMachine.ReactiveCapabilityCurves.ID).AppendLine(" \" is not mapped to GID!");
+                    }
+                    rd.AddProperty(new Property(ModelCode.SYNCMACHINE_CURVES, gid));
+                }
+            }
+        }
+        #endregion Populate ResourceDescription
+
+        #region Enums convert
+        public static PhaseCode GetDMSPhaseCode(FTN.PhaseCode phases)
 		{
 			switch (phases)
 			{
@@ -57,6 +188,32 @@
 				default: return PhaseCode.Unknown;
 			}
 		}
-		#endregion Enums convert
-	}
+
+        public static RegulatingControlModeKind GetDMSRegulatingControlModeKind(FTN.RegulatingControlModeKind modes)
+        {
+            switch (modes)
+            {
+                case FTN.RegulatingControlModeKind.voltage:
+                    return RegulatingControlModeKind.Voltage;
+                case FTN.RegulatingControlModeKind.activePower:
+                    return RegulatingControlModeKind.ActivePower;
+                case FTN.RegulatingControlModeKind.reactivePower:
+                    return RegulatingControlModeKind.ReactivePower;
+                case FTN.RegulatingControlModeKind.currentFlow:
+                    return RegulatingControlModeKind.CurrentFlow;
+                case FTN.RegulatingControlModeKind.@fixed:
+                    return RegulatingControlModeKind.Fixed;
+                case FTN.RegulatingControlModeKind.admittance:
+                    return RegulatingControlModeKind.Admittance;
+                case FTN.RegulatingControlModeKind.timeScheduled:
+                    return RegulatingControlModeKind.TimeScheduled;
+                case FTN.RegulatingControlModeKind.temperature:
+                    return RegulatingControlModeKind.Temperature;
+                case FTN.RegulatingControlModeKind.powerFactor:
+                    return RegulatingControlModeKind.PowerFactor;
+                default: return RegulatingControlModeKind.PowerFactor;
+            }
+        }
+        #endregion Enums convert
+    }
 }
