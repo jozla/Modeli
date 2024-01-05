@@ -10,11 +10,20 @@
 	{
 
         #region Populate ResourceDescription
+        public static void PopulateIdentifiedObjectProperties(FTN.IdentifiedObject cimIdentifiedObject, ResourceDescription rd)
+        {
+        }
+
+        public static void PopulatePowerSystemResourceProperties(FTN.PowerSystemResource cimPowerSystemResource, ResourceDescription rd)
+        {
+            PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimPowerSystemResource, rd);
+        }
+
         public static void PopulateTerminalProperties(FTN.Terminal cimTerminal, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
         {
             if ((cimTerminal != null) && (rd != null))
             {
-                //PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimTerminal, rd);
+                PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimTerminal, rd);
 
                 if (cimTerminal.ConductingEquipmentHasValue)
                 {
@@ -34,7 +43,7 @@
         {
             if ((cimControl != null) && (rd != null))
             {
-                //PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimControl, rd);
+                PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimControl, rd);
 
                 if (cimControl.RegulatingCondEqHasValue)
                 {
@@ -53,7 +62,7 @@
         {
             if ((cimEquipment != null) && (rd != null))
             {
-                //PowerTransformerConverter.PopulatePowerSystemResourceProperties(cimEquipment, rd, importHelper, report);
+                PowerTransformerConverter.PopulatePowerSystemResourceProperties(cimEquipment, rd);
 
                 if (cimEquipment.AggregateHasValue)
                 {
@@ -70,7 +79,7 @@
         {
             if ((cimRegulatingControl != null) && (rd != null))
             {
-                //PowerTransformerConverter.PopulatePowerSystemResourceProperties(cimRegulatingControl, rd, importHelper, report);
+                PowerTransformerConverter.PopulatePowerSystemResourceProperties(cimRegulatingControl, rd);
 
                 if (cimRegulatingControl.DiscreteHasValue)
                 {
@@ -105,11 +114,16 @@
             }
         }
 
+        public static void PopulateConductingEquipmentProperties(FTN.ConductingEquipment cimConductingEquipment, ResourceDescription rd)
+        {
+            PowerTransformerConverter.PopulateEquipmentProperties(cimConductingEquipment, rd);
+        }
+
         public static void PopulateRegulatingCondEqProperties(FTN.RegulatingCondEq cimRegulatingCondEq, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
         {
             if ((cimRegulatingCondEq != null) && (rd != null))
             {
-                //PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimRegulatingCondEq, rd);
+                PowerTransformerConverter.PopulateConductingEquipmentProperties(cimRegulatingCondEq, rd);
 
                 if (cimRegulatingCondEq.RegulatingControlHasValue)
                 {
@@ -124,11 +138,26 @@
             }
         }
 
+        public static void PopulateRotatingMachineProperties(FTN.RotatingMachine cimRotatingMachine, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
+        {
+            PowerTransformerConverter.PopulateRegulatingCondEqProperties(cimRotatingMachine, rd, importHelper, report);
+        }
+
+        public static void PopulateShuntCompensantorProperties(FTN.ShuntCompensator cimShuntCompensator, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
+        {
+            PowerTransformerConverter.PopulateRegulatingCondEqProperties(cimShuntCompensator, rd, importHelper, report);
+        }
+
+        public static void PopulateStaticVarCompensatorProperties(FTN.StaticVarCompensator cimStaticVarCompensator, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
+        {
+            PowerTransformerConverter.PopulateRegulatingCondEqProperties(cimStaticVarCompensator, rd, importHelper, report);
+        }
+
         public static void PopulateSynchronousMachineProperties(FTN.SynchronousMachine cimSynchronousMachine, ResourceDescription rd, ImportHelper importHelper, TransformAndLoadReport report)
         {
             if ((cimSynchronousMachine != null) && (rd != null))
             {
-                //PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimSynchronousMachine, rd);
+                PowerTransformerConverter.PopulateRotatingMachineProperties(cimSynchronousMachine, rd, importHelper, report);
 
                 if (cimSynchronousMachine.ReactiveCapabilityCurvesHasValue)
                 {
@@ -141,6 +170,11 @@
                     rd.AddProperty(new Property(ModelCode.SYNCMACHINE_CURVES, gid));
                 }
             }
+        }
+
+        public static void PopulateReactiveCapabilityCurveProperties(FTN.ReactiveCapabilityCurve cimReactiveCapabilityCurve, ResourceDescription rd)
+        {
+            PowerTransformerConverter.PopulateIdentifiedObjectProperties(cimReactiveCapabilityCurve, rd);
         }
         #endregion Populate ResourceDescription
 
