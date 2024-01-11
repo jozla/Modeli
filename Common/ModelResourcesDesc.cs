@@ -865,14 +865,14 @@ namespace FTN.Common
 		# region Initialization of metadata
 
 		private void InitializeTypeIdsInInsertOrder()
-		{			
-			typeIdsInInsertOrder.Add(ModelCode.TERMINAL);
-			typeIdsInInsertOrder.Add(ModelCode.CONTROL);
-			typeIdsInInsertOrder.Add(ModelCode.REGCONTROL);
+		{
+			//typeIdsInInsertOrder.Add(ModelCode.REACTCAPCURVE);
+			typeIdsInInsertOrder.Add(ModelCode.SYNCMACHINE);
 			typeIdsInInsertOrder.Add(ModelCode.SHUNTCOMP);
 			typeIdsInInsertOrder.Add(ModelCode.STATICVARCOMP);			
-			typeIdsInInsertOrder.Add(ModelCode.SYNCMACHINE);
-			typeIdsInInsertOrder.Add(ModelCode.REACTCAPCURVE);
+			typeIdsInInsertOrder.Add(ModelCode.TERMINAL);
+			typeIdsInInsertOrder.Add(ModelCode.REGCONTROL);
+			typeIdsInInsertOrder.Add(ModelCode.CONTROL);
         }
 
 		private void InitializeNotSettablePropertyIds()
@@ -882,7 +882,7 @@ namespace FTN.Common
 			notSettablePropertyIds.Add(ModelCode.REGCONTROL_REGCONDEQ);
 			notSettablePropertyIds.Add(ModelCode.CONDEQ_TERMINALS);
             notSettablePropertyIds.Add(ModelCode.REGCONDEQ_CONTROLS);	
-            notSettablePropertyIds.Add(ModelCode.REACTCAPCURVE_MACHINES);
+            //notSettablePropertyIds.Add(ModelCode.REACTCAPCURVE_MACHINES);
         }
 	
 		# endregion Initialization of metadata

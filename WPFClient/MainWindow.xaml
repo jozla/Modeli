@@ -1,0 +1,86 @@
+﻿<Window x:Class="WPFClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFClient"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="600">
+    <Grid>
+        <TabControl>
+            <!-- Tab for GetValues -->
+            <TabItem Header="GetValues">
+                <!-- Add your GetValues content here -->
+                <!-- Add your GetExtentValues content here -->
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0">
+                    <!-- ComboBox and Label for GID -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label Content="GID:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <ComboBox Width="150" Margin="5" Name="cmbGID" ItemsSource="{Binding Path=ComboBoxGids}" SelectedItem="{Binding Path=ValuesGid}"/>
+                    </StackPanel>
+
+                    <!-- ListBox for PROPERTIES -->
+                    <Label Content="PROPERTIES:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <ListBox Name="lstProperties" Width="350" Height="120" ItemsSource="{Binding Path=ValuesProperties, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Multiple">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <CheckBox  Margin="3" Content="{Binding}" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected, Mode=TwoWay}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ListBox>
+
+                    <!-- Button for LOAD -->
+                    <Button Content="LOAD" Width="150" Height="25" Margin="0,10,0,0" Click="LoadButton_Click"/>
+
+                    <!-- TextBox for RESULT -->
+                    <Label Content="RESULT:" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Center"/>
+                    <TextBox Name="txtResult" Width="350" Height="120" Margin="0,0,0,5" />
+
+                </StackPanel>
+            </TabItem>
+
+            <!-- Tab for GetExtentValues -->
+            <TabItem Header="GetExtentValues">
+                <!-- Add your GetValues content here -->
+                <!-- Add your GetExtentValues content here -->
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0">
+                    <!-- ComboBox and Label for GID -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label Content="Model code:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <ComboBox Width="150" Margin="5" Name="cmbModelCodes" ItemsSource="{Binding Path=ComboBoxModelCodes}" SelectedItem="{Binding Path=ExtentModelCode}"/>
+                    </StackPanel>
+
+                    <!-- ListBox for PROPERTIES -->
+                    <Label Content="PROPERTIES:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <ListBox Name="lstProperties2" Width="350" Height="120" ItemsSource="{Binding Path=ExtentProperties, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Multiple">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <CheckBox  Margin="3" Content="{Binding}" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected, Mode=TwoWay}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ListBox>
+
+                    <!-- Button for LOAD -->
+                    <Button Content="LOAD" Width="150" Height="25" Margin="0,10,0,0" Click="Button_Click"/>
+
+                    <!-- TextBox for RESULT -->
+                    <Label Content="RESULT:" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Center"/>
+                    <TextBox Name="txtResult2" Width="350" Height="120" Margin="0,0,0,5" />
+
+                </StackPanel>
+            </TabItem>
+
+            <!-- Tab for GetRelatedValues -->
+            <TabItem Header="GetRelatedValues">
+                <!-- Add your GetRelatedValues content here -->
+                <StackPanel>
+                    <Label Content="GetRelatedValues Content Goes Here" />
+                </StackPanel>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

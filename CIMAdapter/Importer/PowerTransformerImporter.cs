@@ -93,7 +93,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
 			LogManager.Log("Loading elements and creating delta...", LogLevel.Info);
 
 			//// import all concrete model types (DMSType enum)
-            ImportReactiveCapabilityCurves();
+            //ImportReactiveCapabilityCurves();
             ImportSynchronousMachines();
             ImportShuntCompensators();
             ImportStaticVarCompensators();
@@ -373,6 +373,7 @@ namespace FTN.ESI.SIMES.CIM.CIMAdapter.Importer
 
         private ResourceDescription CreateReactiveCapabilityCurveResourceDescription(FTN.ReactiveCapabilityCurve cimReactiveCapabilityCurve)
         {
+           
             ResourceDescription rd = null;
             if (cimReactiveCapabilityCurve != null)
             {
