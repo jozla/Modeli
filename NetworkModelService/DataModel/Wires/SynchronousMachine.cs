@@ -43,7 +43,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Wires
         {
             switch (property)
             {
-                case ModelCode.SYNCMACHINE_CURVES:
+                case ModelCode.SYNCMACHINE_REACTCAPCURVES:
                     return true;
 
                 default:
@@ -55,7 +55,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Wires
         {
             switch (prop.Id)
             {
-                case ModelCode.SYNCMACHINE_CURVES:
+                case ModelCode.SYNCMACHINE_REACTCAPCURVES:
                     prop.SetValue(reactiveCapabilityCurves);
                     break;
 
@@ -69,7 +69,7 @@ namespace FTN.Services.NetworkModelService.DataModel.Wires
         {
             switch (property.Id)
             {
-                case ModelCode.SYNCMACHINE_CURVES:
+                case ModelCode.SYNCMACHINE_REACTCAPCURVES:
                     reactiveCapabilityCurves = property.AsReference();
                     break;
 
@@ -88,8 +88,8 @@ namespace FTN.Services.NetworkModelService.DataModel.Wires
         {
             if (reactiveCapabilityCurves != 0 && (refType == TypeOfReference.Reference || refType == TypeOfReference.Both))
             {
-                references[ModelCode.SYNCMACHINE_CURVES] = new List<long>();
-                references[ModelCode.SYNCMACHINE_CURVES].Add(reactiveCapabilityCurves);
+                references[ModelCode.SYNCMACHINE_REACTCAPCURVES] = new List<long>();
+                references[ModelCode.SYNCMACHINE_REACTCAPCURVES].Add(reactiveCapabilityCurves);
             }
 
             base.GetReferences(references, refType);

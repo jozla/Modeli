@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WPFClient
 {
@@ -86,11 +87,10 @@ namespace WPFClient
         {
             ResourceDescription rd = null;
             string ret = "";
-            List<ModelCode> properties = new List<ModelCode>();
+            
             try
             {
-                short type = ModelCodeHelper.ExtractTypeFromGlobalId(globalId);
-                properties = list;
+                List<ModelCode> properties = list;
 
                 rd = GdaQueryProxy.GetValues(globalId, properties);
                 ret += String.Format("Item with gid: 0x{0:x16}:\n", globalId);
@@ -103,7 +103,7 @@ namespace WPFClient
                             ret += String.Format(" {0}:\n", p.AsFloat());
                             break;
                         case PropertyType.Bool:
-                            if (p.PropertyValue.LongValue == 0)
+                            if (p.PropertyValue.LongValue == 1)
                                 ret += String.Format(" True\n");
                             else
                                 ret += String.Format(" False\n");
@@ -154,7 +154,7 @@ namespace WPFClient
                             }
                             else
                             {
-                                ret += (" 0 references\n");
+                                ret += (" There is no references\n");
                             }
 
                             break;
@@ -171,7 +171,7 @@ namespace WPFClient
                             break;
 
                         default:
-                            throw new Exception("Failed to export Resource Description as XML. Invalid property type.");
+                            throw new Exception("Failed to export.");
 
                     }
                 }
@@ -186,22 +186,21 @@ namespace WPFClient
 
         public string GetExtentValues(DMSType type, List<ModelCode> list)
         {
-
             int iteratorId = 0;
-            List<long> ids = new List<long>();
             string ret = "";
-            bool gidBool = true;
+            bool showGID = true;
+            int numberOfResources = 2;
+            int resourcesLeft = 0;
             ModelCode modelCode = modelResourcesDesc.GetModelCodeFromType(type);
+
             try
             {
-                int numberOfResources = 2;
-                int resourcesLeft = 0;
 
                 List<ModelCode> properties = list;
                 if (!list.Contains(ModelCode.IDOBJ_GID))
                 {
                     properties.Add(ModelCode.IDOBJ_GID);
-                    gidBool = false;
+                    showGID = false;
                 }
                 iteratorId = GdaQueryProxy.GetExtentValues(modelCode, properties);
                 resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
@@ -215,7 +214,7 @@ namespace WPFClient
                         ret += String.Format("\tItem with gid: 0x{0:x16}\n", rds[i].Properties.Find(r => r.Id == ModelCode.IDOBJ_GID).AsLong());
                         foreach (Property p in rds[i].Properties)
                         {
-                            if (!(p.Id == ModelCode.IDOBJ_GID && !gidBool))
+                            if (!(p.Id == ModelCode.IDOBJ_GID && !showGID))
                             {
                                 ret += String.Format("\t\t{0} =", p.Id);
                                 switch (p.Type)
@@ -225,7 +224,7 @@ namespace WPFClient
                                         ret += String.Format(" {0}:\n", p.AsFloat());
                                         break;
                                     case PropertyType.Bool:
-                                        if (p.PropertyValue.LongValue == 0)
+                                        if (p.PropertyValue.LongValue == 1)
                                             ret += String.Format(" True\n");
                                         else
                                             ret += String.Format(" False\n");
@@ -276,7 +275,7 @@ namespace WPFClient
                                         }
                                         else
                                         {
-                                            ret += (" 0 references\n");
+                                            ret += (" There is no references\n");
                                         }
 
                                         break;
@@ -293,7 +292,7 @@ namespace WPFClient
                                         break;
 
                                     default:
-                                        throw new Exception("Failed to export Resource Description as XML. Invalid property type.");
+                                        throw new Exception("Failed to export.");
                                 }
 
                             }
@@ -310,6 +309,132 @@ namespace WPFClient
 
             }
 
+
+            return ret;
+        }
+
+        public string GetRelatedValues(long sourceGlobalId, Association association, List<ModelCode> props)
+        {
+            int iteratorId = 0;
+            string ret = "";
+            bool showGID = true;
+            int numberOfResources = 2;
+            int resourcesLeft = 0;
+
+            try
+            {
+                List<ModelCode> properties = props;
+                if (props.Contains(ModelCode.IDOBJ_GID) == false)
+                {
+                    properties.Add(ModelCode.IDOBJ_GID);
+                    showGID = false;
+                }
+                iteratorId = GdaQueryProxy.GetRelatedValues(sourceGlobalId, properties, association);
+                resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
+
+                while (resourcesLeft > 0)
+                {
+                    List<ResourceDescription> rds = GdaQueryProxy.IteratorNext(numberOfResources, iteratorId);
+
+                    for (int i = 0; i < rds.Count; i++)
+                    {
+                        ret += String.Format("Item with gid: 0x{0:x16}\n", rds[i].Properties.Find(r => r.Id == ModelCode.IDOBJ_GID).AsLong());
+                        foreach (Property p in rds[i].Properties)
+                        {
+                            if (!(p.Id == ModelCode.IDOBJ_GID && !showGID))
+                            {
+                                ret += String.Format("\t{0} =", p.Id);
+                                switch (p.Type)
+                                {
+                                    case PropertyType.Float:
+                                        ret += String.Format(" {0}:\n", p.AsFloat());
+                                        break;
+                                    case PropertyType.Bool:
+                                        if (p.PropertyValue.LongValue == 1)
+                                            ret += String.Format(" True\n");
+                                        else
+                                            ret += String.Format(" False\n");
+                                        break;
+                                    case PropertyType.Int32:
+                                    case PropertyType.Int64:
+                                    case PropertyType.DateTime:
+                                        if (p.Id == ModelCode.IDOBJ_GID)
+                                        {
+                                            ret += (String.Format(" 0x{0:x16}\n", p.AsLong()));
+                                        }
+                                        else
+                                        {
+                                            ret += String.Format(" {0}\n", p.ToString());
+                                        }
+
+                                        break;
+
+                                    case PropertyType.Reference:
+                                        if (p.PropertyValue.LongValue == 0)
+                                        {
+                                            ret += (String.Format(" No Reference\n"));
+                                        }
+                                        else
+                                        {
+                                            ret += (String.Format(" 0x{0:x16}\n", p.AsReference()));
+                                        }
+                                        break;
+                                    case PropertyType.String:
+                                        if (p.PropertyValue.StringValue == null)
+                                        {
+                                            p.PropertyValue.StringValue = String.Empty;
+                                        }
+                                        ret += String.Format(" {0}\n", p.AsString());
+                                        break;
+
+
+                                    case PropertyType.ReferenceVector:
+                                        if (p.AsLongs().Count > 0)
+                                        {
+                                            string s = "";
+                                            for (int j = 0; j < p.AsLongs().Count; j++)
+                                            {
+                                                s += (String.Format(" 0x{0:x16},\n", p.AsLongs()[j]));
+                                            }
+
+                                            ret += s;
+                                        }
+                                        else
+                                        {
+                                            ret += ("There is no references\n");
+                                        }
+
+                                        break;
+
+                                    case PropertyType.Enum:
+                                        if (p.Id == ModelCode.REGCONTROL_MODE)
+                                        {
+                                            ret += String.Format(" {0}\n", (RegulatingControlModeKind)p.PropertyValue.LongValue);
+                                        }
+                                        if (p.Id == ModelCode.REGCONTROL_MONITOREDPHASE)
+                                        {
+                                            ret += String.Format(" {0}\n", (PhaseCode)p.PropertyValue.LongValue);
+                                        }
+                                        break;
+
+                                    default:
+                                        throw new Exception("Failed to export.");
+
+                                }
+                            }
+                        }
+                    }
+                    resourcesLeft = GdaQueryProxy.IteratorResourcesLeft(iteratorId);
+                }
+
+                GdaQueryProxy.IteratorClose(iteratorId);
+
+
+            }
+            catch (Exception)
+            {
+
+            }
 
             return ret;
         }

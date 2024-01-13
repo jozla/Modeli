@@ -167,7 +167,7 @@
                         report.Report.Append("WARNING: Convert ").Append(cimSynchronousMachine.GetType().ToString()).Append(" rdfID = \"").Append(cimSynchronousMachine.ID);
                         report.Report.Append("\" - Failed to set reference to Location: rdfID \"").Append(cimSynchronousMachine.ReactiveCapabilityCurves.ID).AppendLine(" \" is not mapped to GID!");
                     }
-                    rd.AddProperty(new Property(ModelCode.SYNCMACHINE_CURVES, gid));
+                    rd.AddProperty(new Property(ModelCode.SYNCMACHINE_REACTCAPCURVES, gid));
                 }
             }
         }

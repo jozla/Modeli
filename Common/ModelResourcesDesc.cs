@@ -881,15 +881,15 @@ namespace FTN.Common
             notSettablePropertyIds.Add(ModelCode.TERMINAL_REGCONTROL);
 			notSettablePropertyIds.Add(ModelCode.REGCONTROL_REGCONDEQ);
 			notSettablePropertyIds.Add(ModelCode.CONDEQ_TERMINALS);
-            notSettablePropertyIds.Add(ModelCode.REGCONDEQ_CONTROLS);	
-            //notSettablePropertyIds.Add(ModelCode.REACTCAPCURVE_MACHINES);
+            notSettablePropertyIds.Add(ModelCode.REGCONDEQ_CONTROLS);
+            //notSettablePropertyIds.Add(ModelCode.REACTCAPCURVE_SYNCMACHINES);
         }
-	
-		# endregion Initialization of metadata
 
-		# region Switching between enums and values
+        #endregion Initialization of metadata
 
-		private List<ModelCode> SwitchLongsToModelCodes(List<long> longValues)
+        #region Switching between enums and values
+
+        private List<ModelCode> SwitchLongsToModelCodes(List<long> longValues)
 		{
 			List<ModelCode> result = new List<ModelCode>();
 

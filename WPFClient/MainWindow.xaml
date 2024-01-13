@@ -5,13 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="600">
+        Title="MainWindow" Height="600" Width="600">
     <Grid>
         <TabControl>
             <!-- Tab for GetValues -->
             <TabItem Header="GetValues">
-                <!-- Add your GetValues content here -->
-                <!-- Add your GetExtentValues content here -->
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0">
                     <!-- ComboBox and Label for GID -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -43,8 +41,6 @@
 
             <!-- Tab for GetExtentValues -->
             <TabItem Header="GetExtentValues">
-                <!-- Add your GetValues content here -->
-                <!-- Add your GetExtentValues content here -->
                 <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0">
                     <!-- ComboBox and Label for GID -->
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -76,9 +72,44 @@
 
             <!-- Tab for GetRelatedValues -->
             <TabItem Header="GetRelatedValues">
-                <!-- Add your GetRelatedValues content here -->
-                <StackPanel>
-                    <Label Content="GetRelatedValues Content Goes Here" />
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,30,0,0">
+                    <!-- ComboBox and Label for GID -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label Content="GID:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <ComboBox Width="150" Margin="5" Name="cmbGID2" ItemsSource="{Binding Path=ComboBoxGids2}" SelectedItem="{Binding Path=RelatedGid}"/>
+                    </StackPanel>
+                    
+                    <!--ASSOCIATION-->
+                    <Label Content="ASSOCIATION:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label Content="PROPERTY ID:" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <ComboBox Width="150" Margin="5" Name="cmbPropID" ItemsSource="{Binding Path=ComboBoxPropIDs, Mode=TwoWay}" SelectedItem="{Binding Path=PropID}"/>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Label Content="TYPE:              " HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        <ComboBox Width="150" Margin="5" Name="cmbType" ItemsSource="{Binding Path=Types, UpdateSourceTrigger=PropertyChanged}" SelectedItem="{Binding Path=Type}"/>
+                    </StackPanel>
+
+                    <!-- ListBox for PROPERTIES -->
+                    <Label Content="PROPERTIES:" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <ListBox Name="lstProperties3" Width="350" Height="120" ItemsSource="{Binding Path=RelatedProperties, UpdateSourceTrigger=PropertyChanged}" SelectionMode="Multiple">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <CheckBox  Margin="3" Content="{Binding}" IsChecked="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}}, Path=IsSelected, Mode=TwoWay}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ListBox>
+
+                    <!-- Button for LOAD -->
+                    <Button Content="LOAD" Width="150" Height="25" Margin="0,10,0,0" Click="Button_Click_1"/>
+
+                    <!-- TextBox for RESULT -->
+                    <Label Content="RESULT:" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Center"/>
+                    <TextBox Name="txtResult3" Width="350" Height="120" Margin="0,0,0,5" />
+
                 </StackPanel>
             </TabItem>
         </TabControl>
