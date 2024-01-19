@@ -76,10 +76,6 @@ namespace FTN.Services.NetworkModelService.DataModel.Core
 			}
 		}
 
-		public override void SetProperty(Property property)
-		{
-		}
-
         #endregion IAccess implementation
 
         #region IReference implementation
